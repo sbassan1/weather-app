@@ -1,27 +1,44 @@
 import "./styles/styles.css"
 
-const months = [
-    "January", "February", "March", "April",
-    "May", "June", "July", "August",
-    "September", "October", "November", "December"
-];
+class DateTime {
 
-const days = [
-    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-];
+    getFormattedDateTime() {
+        const months = [
+            "January", "February", "March", "April",
+            "May", "June", "July", "August",
+            "September", "October", "November", "December"
+        ];
 
-// Update this to get the day/month/years updated
-setInterval(function(){
-    let date = new Date();
+        const days = [
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ];    
 
-    let second = date.getSeconds();
-    let minute = date.getMinutes();
-    let hour = date.getHours();
-    let dayName = date.getDay();
-    let dayNum = date.getDate();
-    let monthNum = date.getMonth();
-    let year = date.getFullYear();
+        const now = new Date();
 
-    document.getElementById('date').innerHTML = days[dayName] + " ," + dayNum + ", " + months[monthNum] + ", " + year;
-    document.getElementById('time').innerHTML = hour + ":" + minute + ":" + second;
-    },1000);
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const day = String(now.getDate());
+        const dayName = now.getDay() - 1;
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+        const formattedDate = `${days[dayName]} ${day}, ${months[month]}, ${year}`;
+        const formattedTime = `${hours}:${minutes}:${seconds}`;
+    
+        return { date: formattedDate, time: formattedTime };
+    }
+
+};
+
+const clock = new DateTime();
+
+function setDateTimeDOM() {
+    
+    const {date , time} = clock.getFormattedDateTime();
+
+    document.getElementById('date').innerHTML = date;
+    document.getElementById('time').innerHTML = time;
+}
+
+setInterval(setDateTimeDOM,1000);
